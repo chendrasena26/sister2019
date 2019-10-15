@@ -1,5 +1,7 @@
 import Pyro4
+import Pyro4.errors
 import os
+import time
 uri = "PYRONAME:greetserver@localhost:7777"
 
 # def test_with_ns():
@@ -12,7 +14,16 @@ def listcommand():
 if __name__=='__main__':
     while True:
         listcommand()
+        then = time.time() + 3
         command = input("ketik command: ").lower()
+        now = time.time()
+        if now > then:
+            with Pyro4.Proxy(uri) as p:
+                try:
+                    p._pyroBind()
+                    print("connected!")
+                except Pyro4.errors.CommunicationError:
+                    print("not connected!")
         if command == 'create':
             naming = input("nama file: ")
             p = Pyro4.Proxy(uri)
