@@ -10,15 +10,17 @@ class FileServer(object):
         return dict(kode=kode,message=message,data=data)
 
     def syncserver(self,path='',path2='',nama='',event=""):
+        namainstance = os.path.basename(path)
         os.chdir(path2)
         fuc = [x for x in os.listdir() if os.path.isdir(x)]
-        os.chdir(path)
+        dir = path + "\\" + nama
+        # print(fuc)
         for y in fuc:
-            print(y)
-            if(y is not ".idea" and y is not "__pycache__" and y is not "fileserver1"):
+            # print(y)
+            if(y != ".idea" and y != "__pycache__" and y != namainstance):
                 dir2 = path2 + "\\" + y
                 if(event == "notdel"):
-                    shutil.copy2(nama,dir2)
+                    shutil.copy2(dir,dir2)
                 elif(event == "del"):
                     os.remove(dir2 + "\\" + nama)
 
